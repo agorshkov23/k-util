@@ -13,6 +13,7 @@ import ml.ialegor.util.logging.log
 import ml.ialegor.util.logging.measure
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import kotlin.test.assertNotNull
 
 class GitHubMultiTest {
 
@@ -32,9 +33,9 @@ class GitHubMultiTest {
     fun testApi() {
         val futureTags = gitHubDao.getRepositoryTagsFuture("spring-projects/spring-boot")
 
-        val allTags = futureTags.toList()
+        val allTags = futureTags.getPage(1, 15)
 
-        val i = 5
+        assertNotNull(allTags)
     }
 }
 
@@ -64,9 +65,9 @@ class GitHubDao(
     }
 
     fun getRepositoryTagsFuture(name: String, size: Int = options.defaultSize): FuturePage<GitHubTag> {
-        return FuturePage(size, options) {
-            val items = getRepositoryTags(name, this)
-            return@FuturePage PageResponse(this, items)
+        return FuturePage(size, options) {request ->
+            val items = getRepositoryTags(name, request)
+            return@FuturePage PageResponse(request, items)
         }
     }
 }
