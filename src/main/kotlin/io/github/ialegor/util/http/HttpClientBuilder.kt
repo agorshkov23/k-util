@@ -1,4 +1,4 @@
-package ml.ialegor.util.http
+package io.github.ialegor.util.http
 
 class HttpClientBuilder {
     lateinit var url: String

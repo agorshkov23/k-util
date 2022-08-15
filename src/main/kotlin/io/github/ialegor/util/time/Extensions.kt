@@ -1,4 +1,4 @@
-package ml.ialegor.util.time
+package io.github.ialegor.util.time
 
 import java.time.Duration
 

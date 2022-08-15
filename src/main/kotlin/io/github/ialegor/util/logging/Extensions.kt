@@ -1,6 +1,6 @@
-package ml.ialegor.util.logging
+package io.github.ialegor.util.logging
 
-import ml.ialegor.util.time.format
+import io.github.ialegor.util.time.format
 import mu.KLogger
 import mu.KotlinLogging
 import java.time.Duration

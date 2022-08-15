@@ -1,16 +1,16 @@
-package ml.ialegor.util.mutli.github
+package io.github.ialegor.util.mutli.github
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import feign.Param
 import feign.QueryMap
 import feign.RequestLine
-import ml.ialegor.util.collection.FuturePage
-import ml.ialegor.util.collection.PageRequest
-import ml.ialegor.util.collection.PageResponse
-import ml.ialegor.util.http.HttpClientBuilder
-import ml.ialegor.util.http.feign.buildFeignClient
-import ml.ialegor.util.logging.log
-import ml.ialegor.util.logging.measure
+import io.github.ialegor.util.collection.FuturePage
+import io.github.ialegor.util.collection.PageRequest
+import io.github.ialegor.util.collection.PageResponse
+import io.github.ialegor.util.http.HttpClientBuilder
+import io.github.ialegor.util.http.feign.buildFeignClient
+import io.github.ialegor.util.logging.log
+import io.github.ialegor.util.logging.measure
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertNotNull

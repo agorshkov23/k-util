@@ -1,4 +1,4 @@
-package ml.ialegor.util.collection
+package io.github.ialegor.util.collection
 
 import kotlin.math.max
 import kotlin.math.min

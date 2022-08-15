@@ -1,4 +1,4 @@
-package ml.ialegor.util.collection
+package io.github.ialegor.util.collection
 
 data class PageResponse<T>(
     val page: Int,

@@ -1,4 +1,4 @@
-package ml.ialegor.util.collection
+package io.github.ialegor.util.collection
 
 fun <T> List<T>.toFuturePage(size: Int): FuturePage<T> {
     return FuturePage(size, options = FuturePage.Options(0, maxSize = Int.MAX_VALUE)) { request ->
