@@ -1,0 +1,11 @@
+root = true
+
+[*]
+charset = utf-8
+indent_size = tab
+indent_style = space
+insert_final_newline = true
+tab_width = 4
+
+[*.kt]
+ij_kotlin_allow_trailing_comma = true
