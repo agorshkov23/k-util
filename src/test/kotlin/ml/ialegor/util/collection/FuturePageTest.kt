@@ -1,16 +1,18 @@
 package ml.ialegor.util.collection
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 internal class FuturePageTest {
 
-    val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 0)
+    private val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 0)
 
-    @Test
-    fun test_eachItem() {
+    @ParameterizedTest
+    @MethodSource("provideSizes")
+    fun test_eachItem(size: Int) {
         val actual = mutableListOf<Int>()
-        val future = list.toFuturePage(5)
+        val future = list.toFuturePage(size)
 
         future.eachItem { item ->
             actual += item
@@ -19,10 +21,11 @@ internal class FuturePageTest {
         assertEquals(list, actual)
     }
 
-    @Test
-    fun test_eachPage() {
+    @ParameterizedTest
+    @MethodSource("provideSizes")
+    fun test_eachPage(size: Int) {
         val actual = mutableListOf<Int>()
-        val future = list.toFuturePage(5)
+        val future = list.toFuturePage(size)
 
         future.eachPage {
             actual += it.items
@@ -31,12 +34,17 @@ internal class FuturePageTest {
         assertEquals(list, actual)
     }
 
-
-    @Test
-    fun test_toList() {
-        val future = list.toFuturePage(5)
+    @ParameterizedTest
+    @MethodSource("provideSizes")
+    fun test_toList(size: Int) {
+        val future = list.toFuturePage(size)
         val actual = future.toList()
 
         assertEquals(list, actual)
+    }
+
+    companion object {
+        @JvmStatic
+        fun provideSizes() = 1..15
     }
 }
