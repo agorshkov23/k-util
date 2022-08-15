@@ -9,3 +9,6 @@ tab_width = 4
 
 [*.kt]
 ij_kotlin_allow_trailing_comma = true
+
+[*.y?ml]
+tab_width = 2
