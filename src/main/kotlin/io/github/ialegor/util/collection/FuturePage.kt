@@ -11,21 +11,33 @@ class FuturePage<T>(
 
     val size = max(1, min(size, options.maxSize))
 
-    fun eachItem(handler: (T) -> Unit) {
-        eachPage { response ->
+    fun eachItem(handler: FutureManager.(T) -> Unit) {
+        val manager = FutureManager()
+        eachPage(manager) { response ->
             for (item in response.items) {
-                handler(item)
+                handler(manager, item)
+                if (manager.stop) {
+                    break
+                }
             }
         }
     }
 
-    fun eachPage(handler: (PageResponse<T>) -> Unit) {
-        var currentPage = PageRequest(options.initialPage, size)
+    fun eachPage(handler: FutureManager.(PageResponse<T>) -> Unit) {
+        val manager = FutureManager()
+        eachPage(manager, handler)
+    }
+
+    private fun eachPage(manager: FutureManager, handler: FutureManager.(PageResponse<T>) -> Unit) {
+        var currentPageRequest = PageRequest(options.initialPage, size)
         var currentPageResponse: PageResponse<T>
         do {
-            currentPageResponse = extractor(currentPage)
-            handler(currentPageResponse)
-            currentPage = currentPage.next()
+            currentPageResponse = extractor(currentPageRequest)
+            handler(manager, currentPageResponse)
+            if (manager.stop) {
+                break
+            }
+            currentPageRequest = currentPageRequest.next()
         } while (currentPageResponse.items.isNotEmpty())
     }
 

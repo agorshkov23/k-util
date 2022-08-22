@@ -6,9 +6,9 @@ import mu.KotlinLogging
 import java.time.Duration
 import kotlin.reflect.KClass
 
-fun Any.log(): KLogger = log(this::class)
+fun Any.logger(): KLogger = logger(this::class)
 
-fun Any.log(kClass: KClass<*>): KLogger = KotlinLogging.logger(kClass.java.name)
+fun Any.logger(kClass: KClass<*>): KLogger = KotlinLogging.logger(kClass.java.name)
 
 fun KLogger.measure(message: String): KLoggerMeasure {
     return KLoggerMeasure(this, message)

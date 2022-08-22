@@ -5,6 +5,8 @@
         </encoder>
     </appender>
 
+    <logger name="io.github.ialegor" level="trace"/>
+
     <root level="debug">
         <appender-ref ref="STDOUT"/>
     </root>

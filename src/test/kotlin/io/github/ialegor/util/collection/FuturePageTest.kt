@@ -23,6 +23,21 @@ internal class FuturePageTest {
 
     @ParameterizedTest
     @MethodSource("provideSizes")
+    fun test_eachItem_stop(size: Int) {
+        val expected = list.take(1)
+        val actual = mutableListOf<Int>()
+        val future = list.toFuturePage(size)
+
+        future.eachItem { item ->
+            actual += item
+            stop()
+        }
+
+        assertEquals(expected, actual)
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSizes")
     fun test_eachPage(size: Int) {
         val actual = mutableListOf<Int>()
         val future = list.toFuturePage(size)
@@ -32,6 +47,21 @@ internal class FuturePageTest {
         }
 
         assertEquals(list, actual)
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSizes")
+    fun test_eachPage_stop(size: Int) {
+        val expected = list.take(size)
+        val actual = mutableListOf<Int>()
+        val future = list.toFuturePage(size)
+
+        future.eachPage {
+            actual += it.items
+            stop()
+        }
+
+        assertEquals(expected, actual)
     }
 
     @ParameterizedTest

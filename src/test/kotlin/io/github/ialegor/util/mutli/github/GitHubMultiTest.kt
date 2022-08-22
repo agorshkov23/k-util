@@ -9,7 +9,7 @@ import io.github.ialegor.util.collection.PageRequest
 import io.github.ialegor.util.collection.PageResponse
 import io.github.ialegor.util.http.HttpClientBuilder
 import io.github.ialegor.util.http.feign.buildFeignClient
-import io.github.ialegor.util.logging.log
+import io.github.ialegor.util.logging.logger
 import io.github.ialegor.util.logging.measure
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -48,7 +48,7 @@ interface GitHubClient {
 class GitHubDao(
     private val client: GitHubClient,
 ) {
-    private val log = log()
+    private val log = logger()
     private val options = FuturePage.Options(1, 30, 100)
 
     fun getRepositoryTags(
