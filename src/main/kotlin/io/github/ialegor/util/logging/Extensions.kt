@@ -4,8 +4,11 @@ import io.github.ialegor.util.time.format
 import mu.KLogger
 import mu.KotlinLogging
 import java.time.Duration
+import kotlin.reflect.KClass
 
-fun Any.log(): KLogger = KotlinLogging.logger(this::class.java.name)
+fun Any.log(): KLogger = log(this::class)
+
+fun Any.log(kClass: KClass<*>): KLogger = KotlinLogging.logger(kClass.java.name)
 
 fun KLogger.measure(message: String): KLoggerMeasure {
     return KLoggerMeasure(this, message)
