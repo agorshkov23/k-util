@@ -1,4 +1,4 @@
-package io.github.ialegor.util.collection
+package io.github.ialegor.util.slice
 
 import java.util.concurrent.atomic.AtomicBoolean
 

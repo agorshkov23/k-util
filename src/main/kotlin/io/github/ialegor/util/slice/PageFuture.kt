@@ -1,17 +1,17 @@
-package io.github.ialegor.util.collection
+package io.github.ialegor.util.slice
 
 import kotlin.math.max
 import kotlin.math.min
 
-class FuturePage<T>(
+open class PageFuture<T>(
     size: Int,
     val options: Options = Options(),
     val extractor: (PageRequest) -> PageResponse<T>,
-) {
+) : SliceFuture<T> {
 
-    val size = max(1, min(size, options.maxSize))
+    override val size = max(1, min(size, options.maxSize))
 
-    fun eachItem(handler: FutureManager.(T) -> Unit) {
+    override fun eachItem(handler: FutureManager.(T) -> Unit) {
         val manager = FutureManager()
         eachPage(manager) { response ->
             for (item in response.items) {
@@ -49,7 +49,7 @@ class FuturePage<T>(
         return extractor(request)
     }
 
-    fun toList(): List<T> {
+    override fun toList(): List<T> {
         val result = mutableListOf<T>()
         eachPage { response ->
             result += response.items
