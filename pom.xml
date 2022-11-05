@@ -22,7 +22,7 @@
 
         <!--versions-->
         <feign.version>11.9.1</feign.version>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.13.4.1</jackson.version>
         <jacoco.version>0.8.8</jacoco.version>
         <junit.version>5.9.0</junit.version>
         <kotlin.version>1.7.10</kotlin.version>
@@ -154,6 +154,17 @@
 
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <repositories>
         <repository>
