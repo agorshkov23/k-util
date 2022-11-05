@@ -9,23 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up JDK 11
+      - name: Set up Java for publishing to GitHub Packages
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Build
-        run: mvn --batch-mode --update-snapshots package
-
-      - run: mkdir staging && cp target/*.jar staging
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Package
-          path: staging
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: site
-          path: target/site
+      - name: Publish to GitHub Packages
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
