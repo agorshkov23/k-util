@@ -10,6 +10,30 @@
     <version>0.0.1-PAGE-SNAPSHOT</version>
 
     <name>ialegor kotlin util</name>
+    <description>Kotlin utilities</description>
+    <url>https://github.com/ialegor/k-util</url>
+
+    <developers>
+        <developer>
+            <id>owner</id>
+            <name>Alexey Gorshkov</name>
+            <email>agorshkov23@mail.ru</email>
+            <timezone>UTC+3</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/mit-license</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/ialegor/k-util</url>
+        <connection>scm:git:https://github.com/ialegor/k-util</connection>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -88,11 +112,6 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
@@ -151,7 +170,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 
