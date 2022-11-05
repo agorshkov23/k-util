@@ -4,7 +4,6 @@ import io.github.ialegor.util.time.format
 import mu.KLogger
 import mu.KotlinLogging
 import java.time.Duration
-import kotlin.jvm.Throws
 import kotlin.reflect.KClass
 
 fun Any.logger(): KLogger = logger(this::class)
