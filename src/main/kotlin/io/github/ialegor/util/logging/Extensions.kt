@@ -33,6 +33,7 @@ class KLoggerExtractor<T>(
         return summary(null)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     fun summary(extractor: (T.() -> String)? = null): T {
         try {
             log.info { message }
@@ -43,7 +44,7 @@ class KLoggerExtractor<T>(
             val elapsed = Duration.ofNanos(end - start)
             log.info { listOfNotNull(message, extractor?.invoke(result), "at ${elapsed.format()}") }
             return result
-        } catch (e: RuntimeException) {
+        } catch (e: Exception) {
             log.warn(e) { "$message: failed at ${e.message}" }
             throw e
         }
