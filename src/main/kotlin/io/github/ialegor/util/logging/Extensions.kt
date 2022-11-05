@@ -4,6 +4,7 @@ import io.github.ialegor.util.time.format
 import mu.KLogger
 import mu.KotlinLogging
 import java.time.Duration
+import kotlin.jvm.Throws
 import kotlin.reflect.KClass
 
 fun Any.logger(): KLogger = logger(this::class)
@@ -42,7 +43,7 @@ class KLoggerExtractor<T>(
             val elapsed = Duration.ofNanos(end - start)
             log.info { listOfNotNull(message, extractor?.invoke(result), "at ${elapsed.format()}") }
             return result
-        } catch (e: Exception) {
+        } catch (e: RuntimeException) {
             log.warn(e) { "$message: failed at ${e.message}" }
             throw e
         }
