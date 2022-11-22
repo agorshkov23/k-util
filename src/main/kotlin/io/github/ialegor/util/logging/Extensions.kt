@@ -29,11 +29,11 @@ class KLoggerExtractor<T>(
     private val extractor: () -> T,
 ) {
     fun get(): T {
-        return summary(null)
+        return summary { null }
     }
 
     @Suppress("TooGenericExceptionCaught")
-    fun summary(extractor: (T.() -> String)? = null): T {
+    fun summary(extractor: (T.() -> String?)): T {
         try {
             log.info { message }
             val start = System.nanoTime()
@@ -41,7 +41,7 @@ class KLoggerExtractor<T>(
             val end = System.nanoTime()
 
             val elapsed = Duration.ofNanos(end - start)
-            log.info { listOfNotNull(message, extractor?.invoke(result), "at ${elapsed.format()}").joinToString(" ") }
+            log.info { listOfNotNull(message, extractor.invoke(result), "at ${elapsed.format()}").joinToString(" ") }
             return result
         } catch (e: Exception) {
             log.warn(e) { "$message: failed at ${e.message}" }
