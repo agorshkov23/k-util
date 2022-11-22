@@ -4,12 +4,15 @@ import kotlin.math.max
 import kotlin.math.min
 
 class BatchFuture<T>(
-    size: Int,
-    val options: Options = Options(),
+    currentSize: Int,
+    maxSize: Int,
     val extractor: (BatchRequest) -> BatchResponse<T>,
 ) : SliceFuture<T> {
 
-    override val size = max(1, min(size, options.maxSize))
+    override val size = max(1, min(currentSize, maxSize))
+
+    @Deprecated("Use another constructor")
+    constructor(size: Int, options: Options = Options(), extractor: (BatchRequest) -> BatchResponse<T>) : this(size, options.maxSize, extractor)
 
     override fun eachItem(handler: FutureManager.(T) -> Unit) {
         val manager = FutureManager()
@@ -49,6 +52,14 @@ class BatchFuture<T>(
         return extractor(request)
     }
 
+    companion object {
+        fun <T> empty(): BatchFuture<T> {
+            return BatchFuture(1, 1) { request ->
+                BatchResponse(request, emptyList())
+            }
+        }
+    }
+
     override fun toList(): List<T> {
         val result = mutableListOf<T>()
         eachBatch { response ->
@@ -57,6 +68,7 @@ class BatchFuture<T>(
         return result
     }
 
+    @Deprecated("Do not use this class")
     data class Options(
         val defaultSize: Int = 5,
         val maxSize: Int = 10,

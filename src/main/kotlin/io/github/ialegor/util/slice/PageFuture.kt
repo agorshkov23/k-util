@@ -4,12 +4,18 @@ import kotlin.math.max
 import kotlin.math.min
 
 open class PageFuture<T>(
-    size: Int,
-    val options: Options = Options(),
-    val extractor: (PageRequest) -> PageResponse<T>,
+    currentSize: Int,
+    maxSize: Int,
+    val initialPage: Int,
+    val extractor: (PageRequest) -> PageResponse<T>
 ) : SliceFuture<T> {
 
-    override val size = max(1, min(size, options.maxSize))
+    override val size = max(1, min(currentSize, maxSize))
+
+    constructor(currentSize: Int, maxSize: Int, extractor: (PageRequest) -> PageResponse<T>) : this(currentSize, maxSize, 0, extractor)
+
+    @Deprecated("Use another constructor")
+    constructor(size: Int, options: Options = Options(), extractor: (PageRequest) -> PageResponse<T>) : this(size, options.maxSize, options.initialPage, extractor)
 
     override fun eachItem(handler: FutureManager.(T) -> Unit) {
         val manager = FutureManager()
@@ -29,7 +35,7 @@ open class PageFuture<T>(
     }
 
     private fun eachPage(manager: FutureManager, handler: FutureManager.(PageResponse<T>) -> Unit) {
-        var currentPageRequest = PageRequest(options.initialPage, size)
+        var currentPageRequest = PageRequest(initialPage, size)
         var currentPageResponse: PageResponse<T>
         do {
             currentPageResponse = extractor(currentPageRequest)
@@ -49,6 +55,14 @@ open class PageFuture<T>(
         return extractor(request)
     }
 
+    companion object {
+        fun <T> empty(): PageFuture<T> {
+            return PageFuture(1, 1) { request ->
+                PageResponse(request, emptyList())
+            }
+        }
+    }
+
     override fun toList(): List<T> {
         val result = mutableListOf<T>()
         eachPage { response ->
@@ -57,6 +71,7 @@ open class PageFuture<T>(
         return result
     }
 
+    @Deprecated("Do not use this class")
     data class Options(
         val initialPage: Int = 0,
         val defaultSize: Int = 5,
