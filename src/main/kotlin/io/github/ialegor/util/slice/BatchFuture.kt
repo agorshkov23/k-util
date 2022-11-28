@@ -11,6 +11,7 @@ class BatchFuture<T>(
 
     override val size = max(1, min(currentSize, maxSize))
 
+    @Suppress("DEPRECATION")
     @Deprecated("Use another constructor")
     constructor(size: Int, options: Options = Options(), extractor: (BatchRequest) -> BatchResponse<T>) : this(size, options.maxSize, extractor)
 

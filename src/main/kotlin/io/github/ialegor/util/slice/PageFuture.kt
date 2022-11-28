@@ -14,6 +14,7 @@ open class PageFuture<T>(
 
     constructor(currentSize: Int, maxSize: Int, extractor: (PageRequest) -> PageResponse<T>) : this(currentSize, maxSize, 0, extractor)
 
+    @Suppress("DEPRECATION")
     @Deprecated("Use another constructor")
     constructor(size: Int, options: Options = Options(), extractor: (PageRequest) -> PageResponse<T>) : this(size, options.maxSize, options.initialPage, extractor)
 

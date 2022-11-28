@@ -4,19 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import feign.Param
 import feign.QueryMap
 import feign.RequestLine
-import io.github.ialegor.util.slice.PageFuture
-import io.github.ialegor.util.slice.PageRequest
-import io.github.ialegor.util.slice.PageResponse
 import io.github.ialegor.util.http.HttpClientBuilder
 import io.github.ialegor.util.http.feign.buildFeignClient
 import io.github.ialegor.util.logging.logger
 import io.github.ialegor.util.logging.measure
+import io.github.ialegor.util.slice.PageFuture
+import io.github.ialegor.util.slice.PageRequest
+import io.github.ialegor.util.slice.PageResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertNotNull
 
 class GitHubMultiTest {
-
 
     lateinit var gitHubDao: GitHubDao
 
@@ -49,7 +48,8 @@ class GitHubDao(
     private val client: GitHubClient,
 ) {
     private val log = logger()
-    private val options = PageFuture.Options(1, 30, 100)
+    private val defaultSize = 30
+    private val maxSize = 100
 
     fun getRepositoryTags(
         name: String,
@@ -64,8 +64,8 @@ class GitHubDao(
             .summary { "received $size items" }
     }
 
-    fun getRepositoryTagsFuture(name: String, size: Int = options.defaultSize): PageFuture<GitHubTag> {
-        return PageFuture(size, options) { request ->
+    fun getRepositoryTagsFuture(name: String, size: Int = defaultSize): PageFuture<GitHubTag> {
+        return PageFuture(size, maxSize, 1) { request ->
             val items = getRepositoryTags(name, request)
             return@PageFuture PageResponse(request, items)
         }
