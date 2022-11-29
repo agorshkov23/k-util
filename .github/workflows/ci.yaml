@@ -20,19 +20,19 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name: Build
-        run: mvn --batch-mode install -Dmaven.test.skip=true
-
-      - name: Test
-        run: mvn -B test
-
       - name: Install GPG Secret key
         run: |
           cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
 
+      - name: Build
+        run: mvn --batch-mode install gpg:sign -Dmaven.test.skip=true -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+
+      - name: Test
+        run: mvn -B test
+
       - name: Publish to the Maven Central Repository
-        run: mvn --batch-mode deploy -DdeployAtEnd #-Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+        run: mvn --batch-mode deploy -DdeployAtEnd
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
@@ -44,6 +44,6 @@ jobs:
           distribution: 'adopt'
 
       - name: Publish to GitHub Packages
-        run: mvn --batch-mode deploy -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository }} -DdeployAtEnd #-Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+        run: mvn --batch-mode deploy -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository }} -DdeployAtEnd
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
