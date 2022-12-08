@@ -29,16 +29,16 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
           server-id: maven
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
+          server-username: ${{ secrets.OSSRH_USERNAME }}
+          server-password: ${{ secrets.OSSRH_TOKEN }}
           gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           gpg-passphrase: OSSRH_GPG_SECRET_KEY_PASSWORD
 
       - name: Publish to Apache Maven Central
         run: mvn --batch-mode deploy
         env:
-          MAVEN_USERNAME: MAVEN_USERNAME
-          MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
 #      - name: Set up Java for publishing to Maven Central Repository
