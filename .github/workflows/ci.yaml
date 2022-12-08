@@ -81,7 +81,7 @@ jobs:
           mvn \
           --batch-mode \
           -DdeployAtEnd \
-          deploy
+          deploy gpg:sign-and-deploy-file
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
