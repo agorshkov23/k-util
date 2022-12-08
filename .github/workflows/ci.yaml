@@ -35,7 +35,7 @@ jobs:
           gpg-passphrase: OSSRH_GPG_SECRET_KEY_PASSWORD
 
       - name: Publish to Apache Maven Central
-        run: mvn deploy
+        run: mvn --batch-mode deploy
         env:
           MAVEN_USERNAME: maven_username123
           MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
