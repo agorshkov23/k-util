@@ -32,14 +32,14 @@ jobs:
           server-username: ${{ secrets.OSSRH_USERNAME }}
           server-password: ${{ secrets.OSSRH_TOKEN }}
           gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-          gpg-passphrase: OSSRH_GPG_SECRET_KEY_PASSWORD
+          gpg-passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
 
       - name: Publish to Apache Maven Central
         run: mvn --batch-mode deploy
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+#        env:
+#          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+#          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+#          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
 #      - name: Set up Java for publishing to Maven Central Repository
 #        uses: actions/setup-java@v3
