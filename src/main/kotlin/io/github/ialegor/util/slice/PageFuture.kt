@@ -3,20 +3,21 @@ package io.github.ialegor.util.slice
 import kotlin.math.max
 import kotlin.math.min
 
-open class PageFuture<T>(
-    currentSize: Int,
-    maxSize: Int,
+open class PageFuture<T> protected constructor(
+    override val size: Int,
     val initialPage: Int,
-    val extractor: (PageRequest) -> PageResponse<T>
+    protected val extractManager: ExtractManager,
+    val extractor: (PageRequest) -> PageResponse<T>,
 ) : SliceFuture<T> {
 
-    override val size = max(1, min(currentSize, maxSize))
+    constructor(currentSize: Int, maxSize: Int, initialPage: Int, extractor: (PageRequest) -> PageResponse<T>)
+        : this(max(1, min(currentSize, maxSize)), initialPage, ExtractManager(), extractor)
 
-    constructor(currentSize: Int, maxSize: Int, extractor: (PageRequest) -> PageResponse<T>) : this(currentSize, maxSize, 0, extractor)
+    constructor(currentSize: Int, maxSize: Int, extractor: (PageRequest) -> PageResponse<T>)
+        : this(currentSize, maxSize, 0, extractor)
 
-    @Suppress("DEPRECATION")
-    @Deprecated("Use another constructor")
-    constructor(size: Int, options: Options = Options(), extractor: (PageRequest) -> PageResponse<T>) : this(size, options.maxSize, options.initialPage, extractor)
+    protected constructor(size: Int, extractor: (PageRequest) -> PageResponse<T>)
+        : this(size, size, 0, extractor)
 
     override fun eachItem(handler: FutureManager.(T) -> Unit) {
         val manager = FutureManager()
@@ -45,7 +46,17 @@ open class PageFuture<T>(
                 break
             }
             currentPageRequest = currentPageRequest.next()
-        } while (currentPageResponse.items.isNotEmpty())
+        } while (currentPageResponse.items.isNotEmpty() || extractManager.resume)
+    }
+
+    override fun filter(predicate: (T) -> Boolean): PageFuture<T> {
+        val extractManager = ExtractManager()
+        return PageFuture(size, initialPage, extractManager) { request ->
+            val response = extractor.invoke(request)
+            extractManager.resume(response.items.isNotEmpty())
+            val filtered = response.items.filter(predicate)
+            PageResponse(request, filtered)
+        }
     }
 
     fun getPage(page: Int, size: Int = this.size): PageResponse<T> {
@@ -56,11 +67,11 @@ open class PageFuture<T>(
         return extractor(request)
     }
 
-    companion object {
-        fun <T> empty(): PageFuture<T> {
-            return PageFuture(1, 1) { request ->
-                PageResponse(request, emptyList())
-            }
+    override fun <R> map(transform: (T) -> R): PageFuture<R> {
+        return PageFuture(size) { request ->
+            val response = extractor.invoke(request)
+            val mapped = response.items.map(transform)
+            PageResponse(request, mapped)
         }
     }
 
@@ -72,10 +83,11 @@ open class PageFuture<T>(
         return result
     }
 
-    @Deprecated("Do not use this class")
-    data class Options(
-        val initialPage: Int = 0,
-        val defaultSize: Int = 5,
-        val maxSize: Int = 10,
-    )
+    companion object {
+        fun <T> empty(): PageFuture<T> {
+            return PageFuture(1, 1) { request ->
+                PageResponse(request, emptyList())
+            }
+        }
+    }
 }

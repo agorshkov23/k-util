@@ -66,6 +66,30 @@ internal class BatchFutureTest {
 
     @ParameterizedTest
     @MethodSource("provideSizes")
+    fun test_filter(size: Int) {
+        val predicate: (Int) -> Boolean = { it <= 5 }
+        val expected = list.filter(predicate)
+
+        val actual = list.toBatchFuture(size)
+            .filter(predicate)
+            .toList()
+
+        assertEquals(expected, actual)
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSizes")
+    fun test_map(size: Int) {
+        val expected = list.map { it * it }
+        val actual = list.toBatchFuture(size)
+            .map { it * it }
+            .toList()
+
+        assertEquals(expected, actual)
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSizes")
     fun test_toList(size: Int) {
         val future = list.toBatchFuture(size)
         val actual = future.toList()
