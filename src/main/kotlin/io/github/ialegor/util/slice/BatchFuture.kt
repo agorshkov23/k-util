@@ -4,16 +4,16 @@ import kotlin.math.max
 import kotlin.math.min
 
 class BatchFuture<T>(
-    currentSize: Int,
-    maxSize: Int,
+    override val size: Int,
+    protected val extractManager: ExtractManager,
     val extractor: (BatchRequest) -> BatchResponse<T>,
 ) : SliceFuture<T> {
 
-    override val size = max(1, min(currentSize, maxSize))
+    constructor(currentSize: Int, maxSize: Int, extractor: (BatchRequest) -> BatchResponse<T>)
+        : this(max(1, min(currentSize, maxSize)), ExtractManager(), extractor)
 
-    @Suppress("DEPRECATION")
-    @Deprecated("Use another constructor")
-    constructor(size: Int, options: Options = Options(), extractor: (BatchRequest) -> BatchResponse<T>) : this(size, options.maxSize, extractor)
+    protected constructor(size: Int, extractor: (BatchRequest) -> BatchResponse<T>)
+        : this(size, size, extractor)
 
     override fun eachItem(handler: FutureManager.(T) -> Unit) {
         val manager = FutureManager()
@@ -42,7 +42,17 @@ class BatchFuture<T>(
                 break
             }
             currentBatchRequest = currentBatchRequest.next()
-        } while (currentBatchResponse.items.isNotEmpty())
+        } while (currentBatchResponse.items.isNotEmpty() || extractManager.resume)
+    }
+
+    override fun filter(predicate: (T) -> Boolean): BatchFuture<T> {
+        val extractManager = ExtractManager()
+        return BatchFuture(size, extractManager) { request ->
+            val response = extractor.invoke(request)
+            extractManager.resume(response.items.isNotEmpty())
+            val filtered = response.items.filter(predicate)
+            BatchResponse(request, filtered)
+        }
     }
 
     fun getBatch(offset: Int, size: Int = this.size): BatchResponse<T> {
@@ -53,11 +63,11 @@ class BatchFuture<T>(
         return extractor(request)
     }
 
-    companion object {
-        fun <T> empty(): BatchFuture<T> {
-            return BatchFuture(1, 1) { request ->
-                BatchResponse(request, emptyList())
-            }
+    override fun <R> map(transform: (T) -> R): BatchFuture<R> {
+        return BatchFuture(size) { request ->
+            val response = extractor.invoke(request)
+            val mapped = response.items.map(transform)
+            BatchResponse(request, mapped)
         }
     }
 
@@ -69,9 +79,11 @@ class BatchFuture<T>(
         return result
     }
 
-    @Deprecated("Do not use this class")
-    data class Options(
-        val defaultSize: Int = 5,
-        val maxSize: Int = 10,
-    )
+    companion object {
+        fun <T> empty(): BatchFuture<T> {
+            return BatchFuture(1, 1) { request ->
+                BatchResponse(request, emptyList())
+            }
+        }
+    }
 }

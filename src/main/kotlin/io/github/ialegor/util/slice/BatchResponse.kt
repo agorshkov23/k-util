@@ -6,4 +6,5 @@ class BatchResponse<T>(
     override val items: List<T>,
 ) : SliceResponse<T> {
     constructor(request: BatchRequest, items: List<T>) : this(request.offset, request.size, items)
+
 }
