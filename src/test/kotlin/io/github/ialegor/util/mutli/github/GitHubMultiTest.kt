@@ -12,11 +12,9 @@ import io.github.ialegor.util.slice.PageFuture
 import io.github.ialegor.util.slice.PageRequest
 import io.github.ialegor.util.slice.PageResponse
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertNotNull
 
-@Disabled
 class GitHubMultiTest {
 
     lateinit var gitHubDao: GitHubDao

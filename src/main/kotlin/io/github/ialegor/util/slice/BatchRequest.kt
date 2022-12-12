@@ -19,5 +19,7 @@ class BatchRequest(
         }
         return BatchRequest(offset, size)
     }
+
+    override fun toString(): String = "offset $offset (size $size)"
 }
 
