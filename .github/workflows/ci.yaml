@@ -50,7 +50,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: maven
           gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           gpg-passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
           server-id: ossrh
