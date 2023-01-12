@@ -7,7 +7,7 @@
 
     <groupId>io.github.ialegor</groupId>
     <artifactId>k-util</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <name>ialegor kotlin util</name>
     <description>Kotlin utilities</description>
@@ -145,6 +145,7 @@
                 <artifactId>gitflow-maven-plugin</artifactId>
                 <version>${gitflow-maven-plugin.version}</version>
                 <configuration>
+                    <featureSquash>true</featureSquash>
                     <commitMessages>
                         <featureStartMessage>Started version @{version}, feature @{featureName}</featureStartMessage>
                         <featureFinishMessage>Return version @{version}</featureFinishMessage>
@@ -155,7 +156,9 @@
                         <!-- git merge messages -->
                         <releaseFinishMergeMessage>Release @{version}</releaseFinishMergeMessage>
                     </commitMessages>
-                    <featureSquash>true</featureSquash>
+                    <gitFlowConfig>
+                        <versionTagPrefix>v</versionTagPrefix>
+                    </gitFlowConfig>
                 </configuration>
             </plugin>
 
