@@ -7,7 +7,7 @@
 
     <groupId>io.github.ialegor</groupId>
     <artifactId>k-util</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 
     <name>ialegor kotlin util</name>
     <description>Kotlin utilities</description>
@@ -47,6 +47,7 @@
         <!--versions-->
         <dokka.version>1.7.10</dokka.version>
         <feign.version>11.9.1</feign.version>
+        <gitflow-maven-plugin.version>1.19.0</gitflow-maven-plugin.version>
         <jackson.version>2.13.4.1</jackson.version>
         <jacoco.version>0.8.8</jacoco.version>
         <junit.version>5.9.0</junit.version>
@@ -139,6 +140,25 @@
             </plugin>
 
             <!--plugins-->
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>${gitflow-maven-plugin.version}</version>
+                <configuration>
+                    <commitMessages>
+                        <featureStartMessage>Started version @{version}, feature @{featureName}</featureStartMessage>
+                        <featureFinishMessage>Return version @{version}</featureFinishMessage>
+
+                        <releaseStartMessage>Start release @{version}</releaseStartMessage>
+                        <releaseFinishMessage>Started @{version}</releaseFinishMessage>
+
+                        <!-- git merge messages -->
+                        <releaseFinishMergeMessage>Release @{version}</releaseFinishMergeMessage>
+                    </commitMessages>
+                    <featureSquash>true</featureSquash>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -238,6 +258,12 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
