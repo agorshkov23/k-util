@@ -1,6 +1,7 @@
 package io.github.ialegor.util.slice
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
@@ -61,6 +62,13 @@ internal class PageFutureTest {
             stop()
         }
 
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun test_empty() {
+        val expected = emptyList<String>()
+        val actual = PageFuture.empty<String>().toList()
         assertEquals(expected, actual)
     }
 

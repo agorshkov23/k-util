@@ -1,6 +1,6 @@
 package io.github.ialegor.util.slice
 
-class BatchRequest(
+open class BatchRequest(
     val offset: Int,
     override val size: Int,
 ) : SliceRequest<BatchRequest> {

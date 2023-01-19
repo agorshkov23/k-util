@@ -1,51 +1,28 @@
+/**
+ * Deprecated since 0.7.0.
+ */
 package io.github.ialegor.util.logging
 
-import io.github.ialegor.util.time.format
+import io.github.ialegor.util.log.KLoggerMeasure
+import io.github.ialegor.util.log.kLogger
+import io.github.ialegor.util.log.measure
 import mu.KLogger
-import mu.KotlinLogging
-import java.time.Duration
 import kotlin.reflect.KClass
 
-fun Any.logger(): KLogger = logger(this::class)
+/**
+ * Deprecated since 0.7.0.
+ */
+@Deprecated("Use kLogger", ReplaceWith("kLogger()", "io.github.ialegor.util.log.kLogger"), level = DeprecationLevel.WARNING)
+fun Any.logger(): KLogger = kLogger()
 
-fun Any.logger(kClass: KClass<*>): KLogger = KotlinLogging.logger(kClass.java.name)
+/**
+ * Deprecated since 0.7.0.
+ */
+@Deprecated("Use kLogger", ReplaceWith("kLogger(kClass)", "io.github.ialegor.util.log.kLogger"), level = DeprecationLevel.WARNING)
+fun Any.logger(kClass: KClass<*>): KLogger = kLogger(kClass)
 
-fun KLogger.measure(message: String): KLoggerMeasure {
-    return KLoggerMeasure(this, message)
-}
-
-class KLoggerMeasure(
-    private val log: KLogger,
-    private val message: String,
-) {
-    fun <T> extract(extractor: () -> T): KLoggerExtractor<T> {
-        return KLoggerExtractor(log, message, extractor)
-    }
-}
-
-class KLoggerExtractor<T>(
-    private val log: KLogger,
-    private val message: String,
-    private val extractor: () -> T,
-) {
-    fun get(): T {
-        return summary { null }
-    }
-
-    @Suppress("TooGenericExceptionCaught")
-    fun summary(extractor: (T.() -> String?)): T {
-        try {
-            log.info { message }
-            val start = System.nanoTime()
-            val result = this.extractor()
-            val end = System.nanoTime()
-
-            val elapsed = Duration.ofNanos(end - start)
-            log.info { listOfNotNull(message, extractor.invoke(result), "at ${elapsed.format()}").joinToString(" ") }
-            return result
-        } catch (e: Exception) {
-            log.warn(e) { "$message: failed at ${e.message}" }
-            throw e
-        }
-    }
-}
+/**
+ * Deprecated since 0.7.0.
+ */
+@Deprecated("Use measure extension from package io.github.ialegor.util.log", ReplaceWith("measure(message)", "io.github.ialegor.util.log.measure"), level = DeprecationLevel.WARNING)
+fun KLogger.measure(message: String): KLoggerMeasure = measure(message)
