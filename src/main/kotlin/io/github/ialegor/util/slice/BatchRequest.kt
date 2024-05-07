@@ -22,4 +22,3 @@ open class BatchRequest(
 
     override fun toString(): String = "offset $offset (size $size)"
 }
-

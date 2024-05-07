@@ -2,7 +2,7 @@ package io.github.ialegor.util.slice
 
 import java.util.concurrent.atomic.AtomicBoolean
 
-class ExtractManager {
+open class ExtractManager {
 
     private val internalResume = AtomicBoolean(false)
 

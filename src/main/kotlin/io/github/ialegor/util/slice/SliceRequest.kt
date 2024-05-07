@@ -8,7 +8,7 @@ interface SliceRequest<SELF : SliceRequest<SELF>> {
 
     fun next(): SELF
 
-    @Throws(IndexOutOfBoundsException::class)
+    @Throws(IndexOutOfBoundsException::class, UnsupportedOperationException::class)
     fun prev(): SELF
 
     fun prevOrNull(): SELF?

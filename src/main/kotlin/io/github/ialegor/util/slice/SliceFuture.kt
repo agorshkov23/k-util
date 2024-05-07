@@ -9,5 +9,11 @@ interface SliceFuture<T> {
 
     fun <R> map(transform: (T) -> R): SliceFuture<R>
 
-    fun toList(): List<T>
+    fun toList(): List<T> {
+        val result = mutableListOf<T>()
+        eachItem { item ->
+            result += item
+        }
+        return result
+    }
 }

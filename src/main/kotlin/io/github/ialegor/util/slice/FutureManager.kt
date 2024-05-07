@@ -2,7 +2,7 @@ package io.github.ialegor.util.slice
 
 import java.util.concurrent.atomic.AtomicBoolean
 
-class FutureManager {
+open class FutureManager {
 
     private val internalStop = AtomicBoolean(false)
 
@@ -13,5 +13,9 @@ class FutureManager {
     fun stop(value: Boolean = true): Boolean {
         internalStop.set(value)
         return internalStop.get()
+    }
+
+    override fun toString(): String {
+        return "FutureManager(stop=$stop)"
     }
 }
