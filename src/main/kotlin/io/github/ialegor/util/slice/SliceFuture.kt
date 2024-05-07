@@ -5,6 +5,8 @@ interface SliceFuture<T> {
 
     fun eachItem(handler: FutureManager.(T) -> Unit)
 
+    fun eachSlice(handler: FutureManager.(SliceResponse<T>) -> Unit)
+
     fun filter(predicate: (T) -> Boolean): SliceFuture<T>
 
     fun <R> map(transform: (T) -> R): SliceFuture<R>

@@ -12,10 +12,4 @@ internal class PageFutureTest : AbstractSliceFutureTest<PageFuture<Int>, PageReq
     override fun createFutureFromList(items: List<Int>, size: Int): PageFuture<Int> {
         return items.toPageFuture(size)
     }
-
-    override fun PageFuture<Int>.eachSlice(handler: FutureManager.(PageResponse<Int>) -> Unit) {
-        return eachPage {
-            handler.invoke(this, it)
-        }
-    }
 }

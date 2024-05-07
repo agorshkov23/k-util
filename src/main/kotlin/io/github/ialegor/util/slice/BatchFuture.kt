@@ -27,6 +27,10 @@ class BatchFuture<T>(
         }
     }
 
+    override fun eachSlice(handler: FutureManager.(SliceResponse<T>) -> Unit) {
+        eachBatch(handler)
+    }
+
     fun eachBatch(handler: FutureManager.(BatchResponse<T>) -> Unit) {
         val manager = FutureManager()
         eachBatch(manager, handler)

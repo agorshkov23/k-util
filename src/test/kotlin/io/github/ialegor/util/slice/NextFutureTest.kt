@@ -22,10 +22,4 @@ internal class NextFutureTest : AbstractSliceFutureTest<NextFuture<Int, Int>, Ne
             NextResponse(nnext, size, subitems, request)
         }
     }
-
-    override fun NextFuture<Int, Int>.eachSlice(handler: FutureManager.(NextResponse<Int, Int>) -> Unit) {
-        return eachNext {
-            handler.invoke(this, it)
-        }
-    }
 }

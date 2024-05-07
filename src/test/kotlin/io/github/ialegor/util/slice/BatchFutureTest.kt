@@ -12,10 +12,4 @@ internal class BatchFutureTest : AbstractSliceFutureTest<BatchFuture<Int>, Batch
     override fun createFutureFromList(items: List<Int>, size: Int): BatchFuture<Int> {
         return items.toBatchFuture(size)
     }
-
-    override fun BatchFuture<Int>.eachSlice(handler: FutureManager.(BatchResponse<Int>) -> Unit) {
-        return eachBatch {
-            handler.invoke(this, it)
-        }
-    }
 }

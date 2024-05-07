@@ -5,7 +5,6 @@ open class NextFuture<TItem, TNext>(
     protected val extractManager: ExtractManager,
     val extractor: (NextRequest<TNext>) -> NextResponse<TItem, TNext>,
 ) : SliceFuture<TItem> {
-
     constructor(size: Int, extractor: (NextRequest<TNext>) -> NextResponse<TItem, TNext>) : this(size, ExtractManager(), extractor)
 
     override fun eachItem(handler: FutureManager.(TItem) -> Unit) {
@@ -20,22 +19,8 @@ open class NextFuture<TItem, TNext>(
         }
     }
 
-    override fun filter(predicate: (TItem) -> Boolean): NextFuture<TItem, TNext> {
-        val extractManager = ExtractManager()
-        return NextFuture(size, extractManager) { request ->
-            val response = extractor.invoke(request)
-            extractManager.resume(response.items.isNotEmpty())
-            val filtered = response.items.filter(predicate)
-            NextResponse(response.next, size, filtered, request)
-        }
-    }
-
-    override fun <TResult> map(transform: (TItem) -> TResult): NextFuture<TResult, TNext> {
-        return NextFuture(size, ExtractManager()) { request ->
-            val response = extractor.invoke(request)
-            val mapped = response.items.map(transform)
-            NextResponse(response.next, size, mapped, request)
-        }
+    override fun eachSlice(handler: FutureManager.(SliceResponse<TItem>) -> Unit) {
+        eachNext(handler)
     }
 
     fun eachNext(handler: FutureManager.(NextResponse<TItem, TNext>) -> Unit) {
@@ -58,6 +43,24 @@ open class NextFuture<TItem, TNext>(
 
             currentRequest = NextRequest(currentResponse.next, size)
         } while (currentResponse.next != null || extractManager.resume)
+    }
+
+    override fun filter(predicate: (TItem) -> Boolean): NextFuture<TItem, TNext> {
+        val extractManager = ExtractManager()
+        return NextFuture(size, extractManager) { request ->
+            val response = extractor.invoke(request)
+            extractManager.resume(response.items.isNotEmpty())
+            val filtered = response.items.filter(predicate)
+            NextResponse(response.next, size, filtered, request)
+        }
+    }
+
+    override fun <TResult> map(transform: (TItem) -> TResult): NextFuture<TResult, TNext> {
+        return NextFuture(size, ExtractManager()) { request ->
+            val response = extractor.invoke(request)
+            val mapped = response.items.map(transform)
+            NextResponse(response.next, size, mapped, request)
+        }
     }
 
     companion object {

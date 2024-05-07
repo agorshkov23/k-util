@@ -31,6 +31,10 @@ open class PageFuture<T> protected constructor(
         }
     }
 
+    override fun eachSlice(handler: FutureManager.(SliceResponse<T>) -> Unit) {
+        eachPage(handler)
+    }
+
     fun eachPage(handler: FutureManager.(PageResponse<T>) -> Unit) {
         val manager = FutureManager()
         eachPage(manager, handler)
