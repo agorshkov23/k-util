@@ -1,18 +1,18 @@
 package io.github.ialegor.util.slice
 
-interface SliceFuture<T> {
+interface SliceFuture<TItem> {
     val size: Int
 
-    fun eachItem(handler: FutureManager.(T) -> Unit)
+    fun eachItem(handler: FutureManager.(TItem) -> Unit)
 
-    fun eachSlice(handler: FutureManager.(SliceResponse<T>) -> Unit)
+    fun eachSlice(handler: FutureManager.(SliceResponse<TItem>) -> Unit)
 
-    fun filter(predicate: (T) -> Boolean): SliceFuture<T>
+    fun filter(predicate: (TItem) -> Boolean): SliceFuture<TItem>
 
-    fun <R> map(transform: (T) -> R): SliceFuture<R>
+    fun <R> map(transform: (TItem) -> R): SliceFuture<R>
 
-    fun toList(): List<T> {
-        val result = mutableListOf<T>()
+    fun toList(): List<TItem> {
+        val result = mutableListOf<TItem>()
         eachItem { item ->
             result += item
         }

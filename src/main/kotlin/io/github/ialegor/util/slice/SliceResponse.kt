@@ -1,8 +1,8 @@
 package io.github.ialegor.util.slice
 
-interface SliceResponse<T> : Iterable<T> {
+interface SliceResponse<TItem> : Iterable<TItem> {
     val size: Int
-    val items: List<T>
+    val items: List<TItem>
 
-    override fun iterator(): Iterator<T> = items.iterator()
+    override fun iterator(): Iterator<TItem> = items.iterator()
 }

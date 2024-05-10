@@ -1,6 +1,6 @@
 package io.github.ialegor.util.slice
 
-fun <T> List<T>.toBatchFuture(size: Int): BatchFuture<T> {
+fun <TItem> List<TItem>.toBatchFuture(size: Int): BatchFuture<TItem> {
     return BatchFuture(size, Int.MAX_VALUE) { request ->
         val fromIndex = request.offset
         if (this.size <= request.offset) {
@@ -12,7 +12,7 @@ fun <T> List<T>.toBatchFuture(size: Int): BatchFuture<T> {
     }
 }
 
-fun <T> List<T>.toPageFuture(size: Int): PageFuture<T> {
+fun <TItem> List<TItem>.toPageFuture(size: Int): PageFuture<TItem> {
     return PageFuture(size, Int.MAX_VALUE) { request ->
         val fromIndex = request.page * request.size
         if (this.size <= fromIndex) {
