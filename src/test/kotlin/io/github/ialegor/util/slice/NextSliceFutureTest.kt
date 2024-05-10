@@ -3,7 +3,7 @@ package io.github.ialegor.util.slice
 import org.junit.jupiter.api.DisplayName
 
 @DisplayName("Testing NextFuture, NextRequest and NextResponse")
-internal class NextFutureTest : AbstractSliceFutureTest<NextFuture<Int, Int>, NextRequest<Int>, NextResponse<Int, Int>>() {
+internal class NextSliceFutureTest : AbstractSliceFutureTest<NextFuture<Int, Int>, NextRequest<Int>, NextResponse<Int, Int>>() {
 
     override fun createEmptyFuture(): NextFuture<Int, Int> {
         return NextFuture.empty()

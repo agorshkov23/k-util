@@ -6,10 +6,16 @@ interface SliceRequest<SELF : SliceRequest<SELF>> {
 
     val size: Int
 
-    fun next(): SELF
+    interface NextSlice<SELF : NextSlice<SELF>> : SliceRequest<SELF> {
 
-    @Throws(IndexOutOfBoundsException::class, UnsupportedOperationException::class)
-    fun prev(): SELF
+        fun next(): SELF
+    }
 
-    fun prevOrNull(): SELF?
+    interface PrevSlice<SELF : PrevSlice<SELF>> : SliceRequest<SELF> {
+
+        @Throws(IndexOutOfBoundsException::class, UnsupportedOperationException::class)
+        fun prev(): SELF
+
+        fun prevOrNull(): SELF?
+    }
 }

@@ -3,7 +3,8 @@ package io.github.ialegor.util.slice
 open class BatchRequest(
     val offset: Int,
     override val size: Int,
-) : SliceRequest<BatchRequest> {
+) : SliceRequest<BatchRequest>, SliceRequest.NextSlice<BatchRequest>, SliceRequest.PrevSlice<BatchRequest> {
+
     override fun next(): BatchRequest {
         return BatchRequest(offset + size, size)
     }
