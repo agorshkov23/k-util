@@ -9,4 +9,10 @@ open class BatchResponse<TItem>(
 
     override fun toString(): String = "offset $offset (size $size): ${items.size} items"
 
+    open class Total<TItem>(
+        offset: Int,
+        override val size: Int,
+        override val items: List<TItem>,
+        override val total: Long,
+    ) : BatchResponse<TItem>(offset, size, items), SliceResponse.Total
 }

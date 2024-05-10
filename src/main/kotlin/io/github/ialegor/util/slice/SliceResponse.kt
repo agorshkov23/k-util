@@ -5,4 +5,8 @@ interface SliceResponse<TItem> : Iterable<TItem> {
     val items: List<TItem>
 
     override fun iterator(): Iterator<TItem> = items.iterator()
+
+    interface Total {
+        val total: Long
+    }
 }
