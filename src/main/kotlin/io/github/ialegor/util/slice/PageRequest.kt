@@ -1,6 +1,6 @@
 package io.github.ialegor.util.slice
 
-data class PageRequest(
+open class PageRequest(
     val page: Int,
     override val size: Int,
 ) : SliceRequest<PageRequest> {
@@ -21,4 +21,3 @@ data class PageRequest(
 
     override fun toString(): String = "page $page (size $size)"
 }
-

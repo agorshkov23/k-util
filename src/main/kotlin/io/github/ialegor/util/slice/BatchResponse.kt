@@ -1,10 +1,12 @@
 package io.github.ialegor.util.slice
 
-class BatchResponse<T>(
-    val offset: Int,
+open class BatchResponse<T>(
+    offset: Int,
     override val size: Int,
     override val items: List<T>,
-) : SliceResponse<T> {
+) : BatchRequest(offset, size), SliceResponse<T> {
     constructor(request: BatchRequest, items: List<T>) : this(request.offset, request.size, items)
+
+    override fun toString(): String = "offset $offset (size $size): ${items.size} items"
 
 }

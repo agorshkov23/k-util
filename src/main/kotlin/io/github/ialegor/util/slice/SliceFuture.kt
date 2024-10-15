@@ -10,4 +10,6 @@ interface SliceFuture<T> {
     fun <R> map(transform: (T) -> R): SliceFuture<R>
 
     fun toList(): List<T>
+
+    fun toSequence(): Sequence<T>
 }

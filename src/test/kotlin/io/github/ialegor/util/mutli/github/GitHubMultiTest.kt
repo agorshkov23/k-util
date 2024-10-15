@@ -6,8 +6,8 @@ import feign.QueryMap
 import feign.RequestLine
 import io.github.ialegor.util.http.HttpClientBuilder
 import io.github.ialegor.util.http.feign.buildFeignClient
-import io.github.ialegor.util.logging.logger
-import io.github.ialegor.util.logging.measure
+import io.github.ialegor.util.log.kLogger
+import io.github.ialegor.util.log.measure
 import io.github.ialegor.util.slice.PageFuture
 import io.github.ialegor.util.slice.PageRequest
 import io.github.ialegor.util.slice.PageResponse
@@ -47,7 +47,7 @@ interface GitHubClient {
 class GitHubDao(
     private val client: GitHubClient,
 ) {
-    private val log = logger()
+    private val log = kLogger()
     private val defaultSize = 30
     private val maxSize = 100
 

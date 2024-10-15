@@ -79,6 +79,18 @@ class BatchFuture<T>(
         return result
     }
 
+    override fun toSequence(): Sequence<T> {
+        return sequence {
+            var currentBatchRequest = BatchRequest(0, size)
+            var currentBatchResponse: BatchResponse<T>
+            do {
+                currentBatchResponse = extractor(currentBatchRequest)
+                yieldAll(currentBatchResponse.items)
+                currentBatchRequest = currentBatchRequest.next()
+            } while (currentBatchResponse.items.isNotEmpty())
+        }
+    }
+
     companion object {
         fun <T> empty(): BatchFuture<T> {
             return BatchFuture(1, 1) { request ->
