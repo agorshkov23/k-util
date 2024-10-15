@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 
-internal abstract class AbstractSliceFutureTest<TFuture : SliceFuture<Int>, TRequest, TResponse : SliceResponse<Int>> {
+internal abstract class AbstractISliceFutureTest<TFuture : SliceFuture<Int>, TRequest, TResponse : SliceResponse<Int>> {
 
     private val list = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
     private val squareList = list.map { it * it }

@@ -3,7 +3,7 @@ package io.github.ialegor.util.slice
 import org.junit.jupiter.api.DisplayName
 
 @DisplayName("Testing BatchFuture, BatchRequest and BatchResponse")
-internal class BatchFutureTest : AbstractSliceFutureTest<BatchFuture<Int>, BatchRequest, BatchResponse<Int>>() {
+internal class BatchFutureTest : AbstractISliceFutureTest<BatchFuture<Int>, BatchRequest, BatchResponse<Int>>() {
 
     override fun createEmptyFuture(): BatchFuture<Int> {
         return BatchFuture.empty()

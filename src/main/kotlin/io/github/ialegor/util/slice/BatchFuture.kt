@@ -3,7 +3,7 @@ package io.github.ialegor.util.slice
 import kotlin.math.max
 import kotlin.math.min
 
-open class BatchFuture<T>(
+open class BatchFuture<T> protected constructor(
     override val size: Int,
     protected val extractManager: ExtractManager,
     val extractor: (BatchRequest) -> BatchResponse<T>,
