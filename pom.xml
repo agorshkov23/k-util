@@ -7,7 +7,7 @@
 
     <groupId>io.github.ialegor</groupId>
     <artifactId>k-util</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.7</version>
 
     <name>ialegor kotlin util</name>
     <description>Kotlin utilities</description>
