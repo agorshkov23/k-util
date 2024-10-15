@@ -105,6 +105,15 @@ internal class PageFutureTest {
         assertEquals(list, actual)
     }
 
+    @ParameterizedTest
+    @MethodSource("provideSizes")
+    fun test_toSequence(size: Int) {
+        val future = list.toPageFuture(size)
+        val actual = future.toSequence()
+
+        assertEquals(list, actual.toList())
+    }
+
     companion object {
         @JvmStatic
         fun provideSizes() = 1..15

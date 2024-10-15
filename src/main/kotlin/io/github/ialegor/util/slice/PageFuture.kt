@@ -83,6 +83,18 @@ open class PageFuture<T> protected constructor(
         return result
     }
 
+    override fun toSequence(): Sequence<T> {
+        return sequence {
+            var currentPageRequest = PageRequest(initialPage, size)
+            var currentPageResponse: PageResponse<T>
+            do {
+                currentPageResponse = extractor(currentPageRequest)
+                yieldAll(currentPageResponse.items)
+                currentPageRequest = currentPageRequest.next()
+            } while (currentPageResponse.items.isNotEmpty())
+        }
+    }
+
     companion object {
         fun <T> empty(): PageFuture<T> {
             return PageFuture(1, 1) { request ->
